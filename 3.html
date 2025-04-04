@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+  <title>Pre-Trade Checklist – Multi-Setup</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0e0e0e;
+      color: #ffffff;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      background: linear-gradient(135deg, #1c1c1c, #292929);
+      padding: 40px;
+      border-radius: 18px;
+      box-shadow: 0 0 20px rgba(0, 255, 153, 0.25);
+    }
+    h1 {
+      text-align: center;
+      color: #00ffff;
+      font-size: 30px;
+      margin-bottom: 20px;
+      text-shadow: 0 0 8px #00ffff88;
+    }
+    #result {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #00ff99;
+      text-shadow: 0 0 6px #00ff9988;
+    }
+    .progress {
+      width: 100%;
+      height: 25px;
+      background-color: #333;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(to right, #00ff99, #00ffaa);
+      text-align: center;
+      color: #000;
+      font-weight: bold;
+      line-height: 25px;
+    }
+    select#setupSelector {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 18px;
+      font-weight: bold;
+      color: #fff;
+      background: #222;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #00ffff;
+      display: block;
+      margin: 0 auto 25px auto;
+      box-shadow: 0 0 10px #00ffff44;
+    }
+    select#setupSelector option {
+      background-color: #000;
+      color: #fff;
+    }
+    select#setupSelector option[value="breakout"] {
+      color: #00ff66;
+      font-weight: bold;
+    }
+    select#setupSelector option[value="breakoutShort"] {
+      color: #ff4444;
+      font-weight: bold;
+    }
+    select#setupSelector option[value="long"] {
+      color: #33ff99;
+      font-style: italic;
+    }
+    select#setupSelector option[value="short"] {
+      color: #ff3333;
+      font-style: italic;
+    }
+    .question-block {
+      margin-bottom: 25px;
+      background: #1a1a1a;
+      padding: 20px;
+      border-radius: 12px;
+      border-left: 5px solid #888;
+      transition: all 0.3s ease;
+    }
+    .question-block.short {
+      border-left-color: #ff4444;
+    }
+    .question-block.long {
+      border-left-color: #00ff99;
+    }
+    .question-block.breakout {
+      border-left: 5px solid #00ff66;
+      box-shadow: 0 0 15px #00ff66aa;
+      background: linear-gradient(145deg, #1c1c1c, #1f1f1f);
+    }
+    .question-block.breakoutShort {
+      border-left: 5px solid #ff3b3b;
+      box-shadow: 0 0 15px #ff3b3baa;
+      background: linear-gradient(145deg, #1c1c1c, #202020);
+    }
+    .question-block p {
+      margin: 0 0 12px 0;
+      font-size: 17px;
+      line-height: 1.6;
+    }
+    .question-block span.hint {
+      color: #bbbbbb;
+      font-size: 0.95em;
+    }
+    .question-block button {
+      margin-right: 12px;
+      padding: 10px 18px;
+      font-size: 16px;
+      background-color: #333;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .question-block button:hover {
+      opacity: 0.8;
+    }
+    .question-block button.correct {
+      background-color: #00c853;
+    }
+    .question-block button.incorrect {
+      background-color: #d32f2f;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Pre-Trade Checklist – Multi-Setup</h1>
+    <div id="result">Vyber 💪</div>
+    <div class="progress"><div id="progressBar" class="progress-bar" style="width: 0%">0%</div></div>
+    <select id="setupSelector" onchange="switchSetup(this.value)">
+      <option value="breakout">🟢⏫ Breakout - Byass LONG</option>
+      <option value="breakoutShort">🔴⏬ Breakout - Byass SHORT</option>
+      <option value="long">🟢 Reversal a LONG 🎼</option>
+      <option value="short">🔴 Reversal a SHORT 🔻</option>
+    </select>
+    <div id="checklistArea"></div>
+  </div>
+  <script>
+    const checklists = {
+  long: [
+    ["🔼 Prišiel silný prieraz VAH/HOD a odmietnutie ceny?. Čakáme na BT a návrat do VA", "📈 target vpoc / VAL dňa; viac risky; pozn Iniciatívny breakout nad VAH alebo HOD signalizuje začiatok trendu. t.j. tento SET-UP NIE JE PLATNÝ! TIP: Sleduj aj slabosť predchádzajúcej distribúcie."],
+    ["💪 Čakám na silný prieraz", "Iniciatívny pohyb potvrdzuje záujem veľkých hráčov"],
+    ["🚫 Sme mimo včerajšej Value Area?", "Cena vo včerajšej VA = žiadny edge, čakáme na prieraz!"],
+    ["📊 Delta ukazuje BUY záujem?", "Dôležité pre potvrdenie iniciatívy"],
+    ["🔥 Silná Market Delta Short do oblasti PDL, LOD, pdVPOC?", "Agresívny short = možný squeeze hore"],
+    ["🔒 Následne Absorpcia? Reakcia knotmi, veľký objem, zmena delty?", "Známka silného supportu"],
+    ["⚡ Magnety pod nami: LVN, HVN, pdVAH?", "Cena sa môže odraziť, ak je tam likvidita alebo nezáujem. Toto je silný magnet pre cenu, ktorý potvrdzuje zónu ako pivot. Potom môže pokračovať v smere, akým išla predtým."]
+  ],
+  short: [
+    ["🔽 Prišiel silný prieraz VAL/LOD a odmietnutie ceny?. Čakáme na ST a návrat do VA", "📉 target vpoc / VAH dňa; viac risky; pozn.: Iniciatívny breakout nad VAL alebo LOD signalizuje začiatok trendu. t.j. tento SET-UP NIE JE PLATNÝ! TIP: Sleduj aj slabosť predchádzajúcej distribúcie."],
+    ["⚠️ Sme pri VPOC dňa?", "vPOC je magnet pre trh = chop, nevstupuj!"],
+    ["🚫 Sme mimo včerajšej Value Area?", "Cena vo včerajšej VA = žiadny edge, čakáme na prieraz!"],
+    ["💥 Delta ukazuje SELL záujem?", "Dôležité pre potvrdenie iniciatívy"],
+    ["💣 Silná Market Delta Short do oblasti PDL, LOD, pdVPOC?", "Agresívny short = môžeš hľadať reakciu"],
+    ["💬 Následne Absorpcia? Reakcia knotmi, veľký objem, zmena delty?", "Známka silného supportu"],
+    ["⚡ Magnety pod nami: LVN, HVN, pdVAH?", "Cena sa môže odraziť, ak je tam likvidita alebo nezáujem. Toto je silný magnet pre cenu, ktorý potvrdzuje zónu ako pivot. Potom môže pokračovať v smere, akým išla predtým."]
+  ],
+  breakout: [
+    ["🔼 Prerazili sme VAH alebo HOD sviečkou s veľkým Objemom a Deltou?", "📈 Iniciatívny breakout nad VAH alebo HOD signalizuje začiatok trendu. TIP: Sleduj aj slabosť predchádzajúcej distribúcie. Je tam GAP? Voľná zóna na cenu do ďalšieho levela? Alebo je blízko silná rezistencia?"],
+    ["🚫 Sme mimo včerajšej Value Area?", "Cena vo včerajšej VA = žiadny edge, čakáme na prieraz!"],
+    ["🔁 Čakám na Retest s výberom LQ. Neskáčem do trhu ako baran. Prebehol Retest VAH/HOD po Prieraze? DO LVN ešte silnejší EDGE", "🧲 Retest často ukáže, či bol prieraz skutočný. Ale čakáš ešte na výber LQ z retestu RANGE, alebo SWINGu. TIP: Sleduj ako a kde zatvárajú sviečky. Sviečka by nemala zatvárať pod SP, ktoré ho prerazilo = falošný breakout."],
+    ["🪤 Bola vybraná LQ v SPčku? V ňom pod swingom v tomto SP? Na nižšom TF alebo LQ rangu v SP??", "🎯 Stop hunt + návrat = potvrdenie účasti smart money"],
+    ["💣 Silná Market SHORT Delta pri reteste?", "Agresívny short = môžeš hľadať reakciu"],
+    ["🛡️ Následne Absorpcia pri reteste?", "💪 Silní hráči držia breakout úroveň"],
+    ["📊 Delta potvrdzuje pokračovanie?", "🧠 Delta ide s cenou, nie proti = potvrdenie smeru"]
+  ],
+  breakoutShort: [
+    ["🔽 Prerazili sme VAL alebo LOD sviečkou s veľkým VOLUME a Deltou?", "📉 Iniciatívny breakout pod VAL alebo LOD signalizuje sell-off. TIP: Sleduj aj slabosť predchádzajúcej distribúcie. Je tam GAP? Voľná zóna na cenu do ďalšieho levela? Alebo je blízko silná rezistencia?"],
+    ["🚫 Sme mimo včerajšej Value Area?", "Cena vo včerajšej VA = žiadny edge, čakáme na prieraz!"],
+    ["🔁 Čakám na Retest s výberom LQ. Neskáčem do trhu ako baran. Prebehol Retest VAL/LOD po prieraze? DO LVN ešte silnejší EDGE", "🧲 Retest môže potvrdiť prieraz nadol. Ale čakáš ešte na výber LQ z retestu RANGE, alebo SWINGu. TIP: Sleduj ako a kde zatvárajú sviečky. Sviečka by nemala zatvárať pod SP, ktoré ho prerazilo = falošný breakout."],
+    ["🪤 Bola vybraná LQ v SPčku? V ňom nad swingom v tomto SP? Na nižšom TF alebo LQ rangu v SP?", "🎯 Stop hunt + návrat = potvrdenie účasti smart money"],
+    ["💣 Silná Market BUY Delta pri reteste?", "Agresívny short = môžeš hľadať reakciu"],
+    ["🛡️ Následne Absorpcia pri reteste?", "💪 Silní hráči držia breakout úroveň"],
+    ["📊 Delta potvrdzuje pokračovanie?", "🧠 Delta ide s cenou, nie proti = potvrdenie smeru"]
+  ]
+};let answers = {};
+    function switchSetup(type) {
+      answers = {};
+      const checklist = checklists[type];
+      const container = document.getElementById("checklistArea");
+      container.innerHTML = "";
+      checklist.forEach((item, index) => {
+        const qid = `q${index}`;
+        const div = document.createElement("div");
+        div.className = `question-block ${type}`;
+        div.id = qid;
+        div.innerHTML = `
+          <p title="${item[1]}">${index + 1}. ${item[0]} <span class="hint">${item[1]}</span></p>
+          <button onclick="setAnswer('${qid}', true, this)">Áno</button>
+          <button onclick="setAnswer('${qid}', false, this)">Nie</button>
+        `;
+        container.appendChild(div);
+      });
+      updateResult();
+    }
+    function setAnswer(qid, value, btn) {
+      answers[qid] = value;
+      const buttons = document.querySelectorAll(`#${qid} button`);
+      buttons.forEach(b => b.classList.remove("correct", "incorrect"));
+      btn.classList.add(value ? "correct" : "incorrect");
+      updateResult();
+    }
+    function updateResult() {
+      const checklistLength = document.querySelectorAll(".question-block").length;
+      const total = checklistLength;
+      const score = Object.values(answers).filter(Boolean).length;
+      const percent = total ? Math.round((score / total) * 100) : 0;
+      let verdict = "";
+      if (total === 0) verdict = "Vyber 💪";
+      else if (percent >= 80 && score >= 3) verdict = "✅ EDGE POTVRDENÝ – môžeš konať";
+      else if (percent >= 60 && score >= 2) verdict = "⚠️ Zváž dôkazy – ešte to nie je isté";
+      else verdict = "⛔️ SED NA RUKÁCH – EDGE TAM NIE JE";
+
+      document.getElementById("progressBar").style.width = percent + "%";
+      document.getElementById("progressBar").textContent = percent + "%";
+      document.getElementById("result").innerText = `Skóre: ${percent}% – ${verdict}`;
+    }
+    window.onload = () => switchSetup("long");
+  </script>
+</body>
+</html>
